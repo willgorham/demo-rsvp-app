@@ -1,6 +1,25 @@
 import React, { Component } from 'react';
 
 class App extends Component {
+
+  state = {
+    mainInput: '',
+    invitees: [],
+    hideUnresponded: false,
+  };
+
+  handleMainInputChange = (e) => {
+    this.setState({
+      mainInput: e.target.value,
+    })
+  }
+
+  handleHideUnespondedChange = (e) => {
+    this.setState({
+      hideUnresponded: e.target.checked,
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -8,7 +27,7 @@ class App extends Component {
           <h1>RSVP</h1>
           <p>A Treehouse App</p>
           <form>
-              <input type="text" value="Safia" placeholder="Invite Someone" />
+              <input type="text" value={this.state.mainInput} placeholder="Invite Someone" onChange={this.handleMainInputChange} />
               <button type="submit" name="submit" value="submit">Submit</button>
           </form>
         </header>
@@ -16,7 +35,7 @@ class App extends Component {
           <div>
             <h2>Invitees</h2>
             <label>
-              <input type="checkbox" /> Hide those who haven't responded
+              <input type="checkbox" onChange={this.handleHideUnespondedChange} /> Hide those who haven't responded
             </label>
           </div>
           <table className="counter">
