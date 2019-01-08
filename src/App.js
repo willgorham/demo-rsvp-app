@@ -26,7 +26,7 @@ class App extends Component {
         isEditing: true,
       }
     ],
-    hideUnresponded: false,
+    onlyShowConfirmed: false,
   };
 
   handleMainInputChange = (e) => {
@@ -53,21 +53,27 @@ class App extends Component {
 
   handleHideUnespondedChange = (e) => {
     this.setState({
-      hideUnresponded: e.target.checked,
+      onlyShowConfirmed: e.target.checked,
     });
   }
 
-  toggleIsConfirmed = (id) => {
-    this.setState( state => ({
-      invitees: state.invitees.map(invitee => {
+  toggleProperty = (property, id) => {
+    this.setState( state => {
+      const invitees = state.invitees.map(invitee => {
         if (invitee.id === id) {
-          invitee.isConfirmed = !invitee.isConfirmed;
+          invitee[property] = !invitee[property];
         }
 
         return invitee;
-      }),
-    }));
+      });
+
+      return { invitees };
+    });
   }
+
+  toggleIsConfirmed = (id) => this.toggleProperty('isConfirmed', id);
+
+  toggleIsEditing = (id) => this.toggleProperty('isEditing', id);
 
   handleEditing = (name, id) => {
     this.setState( state => {
@@ -81,18 +87,6 @@ class App extends Component {
 
       return { invitees };
     })
-  }
-
-  toggleIsEditing = (id) => {
-    this.setState( state => ({
-      invitees: state.invitees.map(invitee => {
-        if (invitee.id === id) {
-          invitee.isEditing = !invitee.isEditing;
-        }
-
-        return invitee;
-      }),
-    }));
   }
 
   removeInvitee = (id) => {
@@ -128,7 +122,7 @@ class App extends Component {
               <li className="pending"><span>{this.state.pendingInvitee}</span></li>
             }
             {this.state.invitees
-              .filter(invitee => !this.state.hideUnresponded || invitee.isConfirmed)
+              .filter(invitee => !this.state.onlyShowConfirmed || invitee.isConfirmed)
               .map(invitee => (
                 <Invitee
                   invitee={invitee}
