@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import InviteeCounter from './InviteeCounter';
 
 class App extends Component {
 
@@ -120,22 +121,7 @@ class App extends Component {
               <input type="checkbox" onChange={this.handleHideUnespondedChange} /> Hide those who haven't responded
             </label>
           </div>
-          <table className="counter">
-            <tbody>
-              <tr>
-                <td>Attending:</td>
-                <td>{this.state.invitees.filter(i => i.isConfirmed).length}</td>
-              </tr>
-              <tr>
-                <td>Unconfirmed:</td>
-                <td>{this.state.invitees.filter(i => !i.isConfirmed).length}</td>
-              </tr>
-              <tr>
-                <td>Total:</td>
-                <td>{this.state.invitees.length}</td>
-              </tr>
-            </tbody>
-          </table>
+          <InviteeCounter invitees={this.state.invitees} />
           <ul>
             {this.state.newInviteeName &&
               <li className="pending"><span>{this.state.newInviteeName}</span></li>
