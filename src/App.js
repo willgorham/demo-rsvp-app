@@ -92,12 +92,9 @@ class App extends Component {
   }
 
   removeInvitee = (id) => {
-    this.setState( state => {
-      const index = state.invitees.findIndex(invitee => invitee.id === id);
-      return {
-        invitees: [...state.invitees.slice(0, index), ...state.invitees.slice(index + 1)],
-      };
-    });
+    this.setState( state => ({
+      invitees: state.invitees.filter(invitee => invitee.id !== id),
+    }));
   }
 
   render() {
