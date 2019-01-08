@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import Invitee from './Invitee';
 import InviteeCounter from './InviteeCounter';
 
 class App extends Component {
 
   state = {
-    newInviteeName: '',
+    pendingInvitee: '',
     invitees: [
       {
         id: 1,
@@ -30,18 +31,18 @@ class App extends Component {
 
   handleMainInputChange = (e) => {
     this.setState({
-      newInviteeName: e.target.value,
+      pendingInvitee: e.target.value,
     });
   }
 
   handleAddNewInvitee = (e) => {
     e.preventDefault();
     this.setState(state => ({
-      newInviteeName: '',
+      pendingInvitee: '',
       invitees: [
         {
           id: Math.max(...state.invitees.map(invitee => invitee.id)) + 1,
-          name: state.newInviteeName,
+          name: state.pendingInvitee,
           isConfirmed: false,
         },
         ...state.invitees,
@@ -56,7 +57,7 @@ class App extends Component {
     });
   }
 
-  changeInviteeConfirmed = (id) => {
+  toggleIsConfirmed = (id) => {
     this.setState( state => ({
       invitees: state.invitees.map(invitee => {
         if (invitee.id === id) {
@@ -68,7 +69,7 @@ class App extends Component {
     }));
   }
 
-  handleInviteeEditChange = (name, id) => {
+  handleEditing = (name, id) => {
     this.setState( state => {
       const invitees = state.invitees.map(invitee => {
         if (invitee.id === id) {
@@ -82,7 +83,7 @@ class App extends Component {
     })
   }
 
-  editInvitee = (id) => {
+  toggleIsEditing = (id) => {
     this.setState( state => ({
       invitees: state.invitees.map(invitee => {
         if (invitee.id === id) {
@@ -110,7 +111,7 @@ class App extends Component {
           <h1>RSVP</h1>
           <p>A Treehouse App</p>
           <form onSubmit={this.handleAddNewInvitee}>
-              <input type="text" value={this.state.newInviteeName} placeholder="Invite Someone" onChange={this.handleMainInputChange} />
+              <input type="text" value={this.state.pendingInvitee} placeholder="Invite Someone" onChange={this.handleMainInputChange} />
               <button type="submit" name="submit" value="submit">Submit</button>
           </form>
         </header>
@@ -123,33 +124,20 @@ class App extends Component {
           </div>
           <InviteeCounter invitees={this.state.invitees} />
           <ul>
-            {this.state.newInviteeName &&
-              <li className="pending"><span>{this.state.newInviteeName}</span></li>
+            {this.state.pendingInvitee &&
+              <li className="pending"><span>{this.state.pendingInvitee}</span></li>
             }
             {this.state.invitees
               .filter(invitee => !this.state.hideUnresponded || invitee.isConfirmed)
-              .map(person => (
-                <li className={person.isConfirmed ? 'responded' : null} key={person.id}>
-                  {!person.isEditing
-                    ? <span>{person.name}</span>
-                    : <input
-                        type="text"
-                        value={person.name}
-                        onChange={(e) => this.handleInviteeEditChange(e.target.value, person.id)}
-                      />
-                  }
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={person.isConfirmed}
-                      onChange={() => this.changeInviteeConfirmed(person.id)}
-                    /> Confirmed
-                  </label>
-                  <button onClick={() => this.editInvitee(person.id)}>
-                    {person.isEditing ? 'save' : 'edit'}
-                  </button>
-                  <button onClick={() => this.removeInvitee(person.id)}>remove</button>
-                </li>
+              .map(invitee => (
+                <Invitee
+                  invitee={invitee}
+                  key={invitee.id}
+                  handleEditing={this.handleEditing}
+                  toggleIsConfirmed={this.toggleIsConfirmed}
+                  toggleIsEditing={this.toggleIsEditing}
+                  removeInvitee={this.removeInvitee}
+                />
               ))
             }
           </ul>
