@@ -7,26 +7,7 @@ class App extends Component {
 
   state = {
     pendingInvitee: '',
-    invitees: [
-      {
-        id: 1,
-        name: 'Joel',
-        isConfirmed: false,
-        isEditing: false,
-      },
-      {
-        id: 2,
-        name: 'Corrina',
-        isConfirmed: true,
-        isEditing: false,
-      },
-      {
-        id: 3,
-        name: 'Iver',
-        isConfirmed: true,
-        isEditing: true,
-      }
-    ],
+    invitees: [],
     onlyShowConfirmed: false,
   };
 
