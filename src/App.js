@@ -11,6 +11,11 @@ class App extends Component {
     onlyShowConfirmed: false,
   };
 
+  generateId() {
+    const ids = this.state.invitees.map(invitee => invitee.id);
+    return ids.length ? Math.max(...ids) + 1 : 0;
+  }
+
   handlePendingInvitee = (e) => {
     this.setState({
       pendingInvitee: e.target.value,
@@ -23,7 +28,7 @@ class App extends Component {
       pendingInvitee: '',
       invitees: [
         {
-          id: Math.max(...state.invitees.map(invitee => invitee.id)) + 1,
+          id: this.generateId(),
           name: state.pendingInvitee,
           isConfirmed: false,
           isEditing: false,
