@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function NewInviteeForm({
   pendingInvitee,
@@ -12,6 +13,12 @@ function NewInviteeForm({
       <button type="submit" name="submit" value="submit">Submit</button>
     </form>
   );
+}
+
+NewInviteeForm.propTypes = {
+  pendingInvitee: PropTypes.string.isRequired,
+  handleNewInvitee: PropTypes.func.isRequired,
+  handlePendingInvitee: PropTypes.func.isRequired,
 }
 
 export default NewInviteeForm;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function Invitee({
   invitee,
@@ -32,6 +33,19 @@ function Invitee({
       <button onClick={() => removeInvitee(invitee.id)}>remove</button>
     </li>
   );
+}
+
+Invitee.propTypes = {
+  invitee: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    isConfirmed: PropTypes.bool.isRequired,
+    isEditing: PropTypes.bool.isRequired,
+  }).isRequired,
+  handleEditing: PropTypes.func.isRequired,
+  toggleIsConfirmed: PropTypes.func.isRequired,
+  toggleIsEditing: PropTypes.func.isRequired,
+  removeInvitee: PropTypes.func.isRequired,
 }
 
 export default Invitee;

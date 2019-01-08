@@ -45,6 +45,7 @@ class App extends Component {
           id: Math.max(...state.invitees.map(invitee => invitee.id)) + 1,
           name: state.pendingInvitee,
           isConfirmed: false,
+          isEditing: false,
         },
         ...state.invitees,
       ],

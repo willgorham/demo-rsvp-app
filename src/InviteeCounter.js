@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function InviteeCounter({ invitees }) {
   const inviteeCount = invitees.length;
@@ -22,6 +23,12 @@ function InviteeCounter({ invitees }) {
       </tbody>
     </table>
   );
+}
+
+InviteeCounter.propTypes = {
+  invitees: PropTypes.arrayOf(PropTypes.shape({
+    isConfirmed: PropTypes.bool.isRequired,
+  })).isRequired,
 }
 
 export default InviteeCounter;
