@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Invitee from './Invitee';
+import NewInviteeForm from './NewInviteeForm';
 import InviteeCounter from './InviteeCounter';
 
 class App extends Component {
@@ -29,13 +30,13 @@ class App extends Component {
     onlyShowConfirmed: false,
   };
 
-  handleMainInputChange = (e) => {
+  handlePendingInvitee = (e) => {
     this.setState({
       pendingInvitee: e.target.value,
     });
   }
 
-  handleAddNewInvitee = (e) => {
+  handleNewInvitee = (e) => {
     e.preventDefault();
     this.setState(state => ({
       pendingInvitee: '',
@@ -51,7 +52,7 @@ class App extends Component {
 
   }
 
-  handleHideUnespondedChange = (e) => {
+  handleOnlyShowConfirmedChange = (e) => {
     this.setState({
       onlyShowConfirmed: e.target.checked,
     });
@@ -104,16 +105,17 @@ class App extends Component {
         <header>
           <h1>RSVP</h1>
           <p>A Treehouse App</p>
-          <form onSubmit={this.handleAddNewInvitee}>
-              <input type="text" value={this.state.pendingInvitee} placeholder="Invite Someone" onChange={this.handleMainInputChange} />
-              <button type="submit" name="submit" value="submit">Submit</button>
-          </form>
+          <NewInviteeForm
+            pendingInvitee={this.state.pendingInvitee}
+            handleNewInvitee={this.handleNewInvitee}
+            handlePendingInvitee={this.handlePendingInvitee}
+          />
         </header>
         <div className="main">
           <div>
             <h2>Invitees</h2>
             <label>
-              <input type="checkbox" onChange={this.handleHideUnespondedChange} /> Hide those who haven't responded
+              <input type="checkbox" onChange={this.handleOnlyShowConfirmedChange} /> Hide those who haven't responded
             </label>
           </div>
           <InviteeCounter invitees={this.state.invitees} />
