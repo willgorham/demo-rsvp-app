@@ -3,21 +3,103 @@ import React, { Component } from 'react';
 class App extends Component {
 
   state = {
-    mainInput: '',
-    invitees: [],
+    newInviteeName: '',
+    invitees: [
+      {
+        id: 1,
+        name: 'Joel',
+        isConfirmed: false,
+        isEditing: false,
+      },
+      {
+        id: 2,
+        name: 'Corrina',
+        isConfirmed: true,
+        isEditing: false,
+      },
+      {
+        id: 3,
+        name: 'Iver',
+        isConfirmed: true,
+        isEditing: true,
+      }
+    ],
     hideUnresponded: false,
   };
 
   handleMainInputChange = (e) => {
     this.setState({
-      mainInput: e.target.value,
-    })
+      newInviteeName: e.target.value,
+    });
+  }
+
+  handleAddNewInvitee = (e) => {
+    e.preventDefault();
+    this.setState(state => ({
+      newInviteeName: '',
+      invitees: [
+        {
+          id: Math.max(...state.invitees.map(invitee => invitee.id)) + 1,
+          name: state.newInviteeName,
+          isConfirmed: false,
+        },
+        ...state.invitees,
+      ],
+    }));
+
   }
 
   handleHideUnespondedChange = (e) => {
     this.setState({
       hideUnresponded: e.target.checked,
+    });
+  }
+
+  changeInviteeConfirmed = (id) => {
+    this.setState( state => ({
+      invitees: state.invitees.map(invitee => {
+        if (invitee.id === id) {
+          invitee.isConfirmed = !invitee.isConfirmed;
+        }
+
+        return invitee;
+      }),
+    }));
+  }
+
+  handleInviteeEditChange = (name, id) => {
+    this.setState( state => {
+      const invitees = state.invitees.map(invitee => {
+        if (invitee.id === id) {
+          invitee.name = name;
+        }
+
+        return invitee;
+      });
+
+      return { invitees };
     })
+  }
+
+  editInvitee = (id) => {
+    this.setState( state => ({
+      invitees: state.invitees.map(invitee => {
+        if (invitee.id === id) {
+          invitee.isEditing = !invitee.isEditing;
+        }
+
+        return invitee;
+      }),
+    }));
+  }
+
+  removeInvitee = (id) => {
+    this.setState( state => {
+      const index = state.invitees.findIndex(invitee => invitee.id === id);
+      return {
+        invitees: [...state.invitees.slice(0, index), ...state.invitees.slice(index + 1)],
+      };
+    });
   }
 
   render() {
@@ -26,8 +108,8 @@ class App extends Component {
         <header>
           <h1>RSVP</h1>
           <p>A Treehouse App</p>
-          <form>
-              <input type="text" value={this.state.mainInput} placeholder="Invite Someone" onChange={this.handleMainInputChange} />
+          <form onSubmit={this.handleAddNewInvitee}>
+              <input type="text" value={this.state.newInviteeName} placeholder="Invite Someone" onChange={this.handleMainInputChange} />
               <button type="submit" name="submit" value="submit">Submit</button>
           </form>
         </header>
@@ -42,43 +124,48 @@ class App extends Component {
             <tbody>
               <tr>
                 <td>Attending:</td>
-                <td>2</td>
+                <td>{this.state.invitees.filter(i => i.isConfirmed).length}</td>
               </tr>
               <tr>
                 <td>Unconfirmed:</td>
-                <td>1</td>
+                <td>{this.state.invitees.filter(i => !i.isConfirmed).length}</td>
               </tr>
               <tr>
                 <td>Total:</td>
-                <td>3</td>
+                <td>{this.state.invitees.length}</td>
               </tr>
             </tbody>
           </table>
           <ul>
-            <li className="pending"><span>Safia</span></li>
-            <li className="responded"><span>Iver</span>
-              <label>
-                <input type="checkbox" checked /> Confirmed
-              </label>
-              <button>edit</button>
-              <button>remove</button>
-            </li>
-            <li className="responded">
-              <span>Corrina</span>
-              <label>
-                <input type="checkbox" checked /> Confirmed
-              </label>
-              <button>edit</button>
-              <button>remove</button>
-            </li>
-            <li>
-              <span>Joel</span>
-              <label>
-                <input type="checkbox" /> Confirmed
-              </label>
-              <button>edit</button>
-              <button>remove</button>
-            </li>
+            {this.state.newInviteeName &&
+              <li className="pending"><span>{this.state.newInviteeName}</span></li>
+            }
+            {this.state.invitees
+              .filter(invitee => !this.state.hideUnresponded || invitee.isConfirmed)
+              .map(person => (
+                <li className={person.isConfirmed ? 'responded' : null} key={person.id}>
+                  {!person.isEditing
+                    ? <span>{person.name}</span>
+                    : <input
+                        type="text"
+                        value={person.name}
+                        onChange={(e) => this.handleInviteeEditChange(e.target.value, person.id)}
+                      />
+                  }
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={person.isConfirmed}
+                      onChange={() => this.changeInviteeConfirmed(person.id)}
+                    /> Confirmed
+                  </label>
+                  <button onClick={() => this.editInvitee(person.id)}>
+                    {person.isEditing ? 'save' : 'edit'}
+                  </button>
+                  <button onClick={() => this.removeInvitee(person.id)}>remove</button>
+                </li>
+              ))
+            }
           </ul>
         </div>
       </div>
