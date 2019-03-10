@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "25b8f30909cc1a2fb882",
-    "url": "/demo-rsvp-app/static/css/main.716dd50b.chunk.css"
+    "revision": "686812f4ffd83c5b0238",
+    "url": "/demo-rsvp-app/static/css/main.d711645d.chunk.css"
   },
   {
-    "revision": "25b8f30909cc1a2fb882",
-    "url": "/demo-rsvp-app/static/js/main.25b8f309.chunk.js"
+    "revision": "686812f4ffd83c5b0238",
+    "url": "/demo-rsvp-app/static/js/main.686812f4.chunk.js"
   },
   {
     "revision": "77a458057ff8f8a54ef7",
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/demo-rsvp-app/static/media/header-bg.be92ab00.jpg"
   },
   {
-    "revision": "fb16d24e6b868f41bfbc7de74e7302d2",
+    "revision": "7db71a36b6fc87c5b377a8939ab6ee59",
     "url": "/demo-rsvp-app/index.html"
   }
 ];
