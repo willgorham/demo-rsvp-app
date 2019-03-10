@@ -88,7 +88,7 @@ class App extends Component {
       <div className="App">
         <header>
           <h1>RSVP</h1>
-          <p>A Treehouse App</p>
+          <p><a className="github-link" href="https://willgorham.github.io/demo-rsvp-app/">View the source on GitHub</a></p>
           <NewInviteeForm
             pendingInvitee={this.state.pendingInvitee}
             handleNewInvitee={this.handleNewInvitee}

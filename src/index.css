@@ -171,6 +171,16 @@ td:last-child {
   font-size: 1.16em;
   color: rgb(118, 118, 118);
 }
+
+.github-link {
+  color: white;
+
+}
+
+.github-link:hover {
+  color: floralwhite;
+}
+
 /* pending */
 
 .pending {
